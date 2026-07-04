@@ -4,7 +4,7 @@ import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
 
 const List = ({ token }) => {
-  const backendUrl = 'http://localhost:4000';
+  const backendUrl = await axios.get(`${import.meta,env.VITE_BACKEND_URL}/api/product/list`);
 
   const [list, setList] = useState([])
 
