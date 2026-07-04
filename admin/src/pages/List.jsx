@@ -4,7 +4,7 @@ import { backendUrl, currency } from '../App'
 import { toast } from 'react-toastify'
 
 const List = ({ token }) => {
-  const backendUrl = await axios.get(`${import.meta,env.VITE_BACKEND_URL}/api/product/list`);
+  const backendUrl = 'https://ecommerce-backend-iota-livid.vercel.app';
 
   const [list, setList] = useState([])
 
