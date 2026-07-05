@@ -1,3 +1,4 @@
+import transporter from "../config/mailer.js";
 import orderModel from "../models/orderModel.js";
 import userModel from "../models/userModel.js";
 import Stripe from 'stripe' 
@@ -21,7 +22,9 @@ const razorpayInstance = new razorpay({
 // Placing orders using COD Method
 const placeOrder = async (req,res) => {
 
+    console.log("placeOrder called");
     try {
+
 
         const { userId, items, amount, address } = req.body;
 
@@ -40,6 +43,24 @@ const placeOrder = async (req,res) => {
         await newOrder.save()
 
         await userModel.findByIdAndUpdate(userId,{cartData:{}})
+
+        console.log("Before sendEmail");
+        const info = await 
+        transporter.sendMail({
+          from: process.env.EMAIL_USER,
+          to: process.env.EMAIL_USER,
+          subject: "New Order Received",
+           html: `
+              <h2>New Order Received</h2>
+              <p><b>User ID:</b> ${userId}</p>
+              <p><b>Amount:</b> ₹${amount}</p>
+              <p><b>Payment Method:</b> COD</p>
+              <p><b>Customer:</b> ${address.firstName} ${address.lastName}</p>
+              <p><b>City:</b> ${address.city}</p>`,
+});
+
+        console.log("After sendEmail");
+        console.log(info);
 
         res.json({success:true,message:"Order Placed"})
         
